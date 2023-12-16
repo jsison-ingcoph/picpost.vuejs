@@ -1,14 +1,8 @@
 <template>
   <div>
     <v-alert
-      v-if="$store.state.requestStatus.type === 'success'"
-      class="form-alert"
-      type="success"
-    >{{ $store.state.requestStatus.msg }}</v-alert>
-    <v-alert
-      v-if="$store.state.requestStatus.type === 'error'"
-      class="form-alert"
-      type="error"
+      v-if="$store.state.requestStatus.type !== ''"
+      :type="$store.state.requestStatus.type"
     >{{ $store.state.requestStatus.msg }}</v-alert>
   </div>
 </template>

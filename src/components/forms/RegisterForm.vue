@@ -8,7 +8,7 @@
           <v-text-field
             label="Create username"
             @input="updateUsername"
-            v-model="$store.state.registerFormData.username"
+            v-model="$store.state.register.registerFormData.username"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -18,7 +18,7 @@
             type="password"
             label="Create password"
             @input="updatePassword"
-            v-model="$store.state.registerFormData.password"
+            v-model="$store.state.register.registerFormData.password"
           ></v-text-field>
         </v-col>
         <v-col>
@@ -26,7 +26,7 @@
             type="password"
             label="Confirm password"
             @input="updateCPassword"
-            v-model="$store.state.registerFormData.cpassword"
+            v-model="$store.state.register.registerFormData.cpassword"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -35,14 +35,14 @@
           <v-text-field
             label="Last name"
             @input="updateLastname"
-            v-model="$store.state.registerFormData.lastname"
+            v-model="$store.state.register.registerFormData.lastname"
           ></v-text-field>
         </v-col>
         <v-col>
           <v-text-field
             label="First name"
             @input="updateFirstname"
-            v-model="$store.state.registerFormData.firstname"
+            v-model="$store.state.register.registerFormData.firstname"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -51,14 +51,14 @@
           <v-text-field
             label="Middle name (optional)"
             @input="updateMiddlename"
-            v-model="$store.state.registerFormData.middlename"
+            v-model="$store.state.register.registerFormData.middlename"
           ></v-text-field>
         </v-col>
         <v-col>
           <v-text-field
             label="Suffix (optional)"
             @input="updateSuffix"
-            v-model="$store.state.registerFormData.suffix"
+            v-model="$store.state.register.registerFormData.suffix"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -68,7 +68,7 @@
             :items="$store.state.genders"
             label="Gender"
             @input="updateGender"
-            v-model="$store.state.registerFormData.gender"
+            v-model="$store.state.register.registerFormData.gender"
           ></v-select>
         </v-col>
         <v-col>
@@ -76,7 +76,7 @@
             type="date"
             label="Birthdate"
             @input="updateBirthdate"
-            v-model="$store.state.registerFormData.birthdate"
+            v-model="$store.state.register.registerFormData.birthdate"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -85,6 +85,7 @@
           type="submit"
           color="primary"
           large
+          :loading="$store.state.register.processingRegister"
         >Register</v-btn>
         <v-btn
           large

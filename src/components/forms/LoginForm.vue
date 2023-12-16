@@ -8,7 +8,7 @@
           <v-text-field
             label="Username"
             @input="updateUsername"
-            v-model="$store.state.loginFormData.username"
+            v-model="$store.state.login.loginFormData.username"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -18,7 +18,7 @@
             type="password"
             label="Password"
             @input="updatePassword"
-            v-model="$store.state.loginFormData.password"
+            v-model="$store.state.login.loginFormData.password"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -27,23 +27,31 @@
           type="submit"
           color="primary"
           large
+          :loading="$store.state.login.processingLogin"
         >Log-In</v-btn>
         <v-btn
           large
           @click="navigateToRegister"
         >Register</v-btn>
       </div>
+      <alert></alert>
     </v-form>
   </v-card>
 </template>
 
 <script>
+import Alert from '../alerts/Alert.vue'
+
 export default {
   setup() {
     
   },
   created() {
     this.$store.commit('clearRequestStatus');
+    this.$store.commit('clearLoginFormData');
+  },
+  components: {
+    Alert,
   },
   methods: {
     navigateToRegister() {
