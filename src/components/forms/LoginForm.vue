@@ -3,22 +3,31 @@
     <v-card-title>PIC POST</v-card-title>
     <v-card-subtitle>Post something good.</v-card-subtitle>
     <v-form @submit.prevent="$store.dispatch('loginUser')">
-      <v-text-field
-        label="Username"
-        @input="updateUsername"
-        v-model="$store.state.loginFormData.username"
-      ></v-text-field>
-      <v-text-field
-        label="Password"
-        @input="updatePassword"
-        v-model="$store.state.loginFormData.password"
-      ></v-text-field>
+      <v-row>
+        <v-col>
+          <v-text-field
+            label="Username"
+            @input="updateUsername"
+            v-model="$store.state.loginFormData.username"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-text-field
+            type="password"
+            label="Password"
+            @input="updatePassword"
+            v-model="$store.state.loginFormData.password"
+          ></v-text-field>
+        </v-col>
+      </v-row>
       <div class="form-actions">
         <v-btn
           type="submit"
           color="primary"
           large
-        >Log In</v-btn>
+        >Log-In</v-btn>
         <v-btn
           large
           @click="navigateToRegister"
@@ -32,6 +41,9 @@
 export default {
   setup() {
     
+  },
+  created() {
+    this.$store.commit('clearRequestStatus');
   },
   methods: {
     navigateToRegister() {
@@ -58,7 +70,7 @@ export default {
     width: 100%;
     max-width: 24rem;
     margin: auto;
-    padding: 1rem;
+    padding: 2rem;
   }
   .v-card__title {
     justify-content: center;
@@ -67,10 +79,10 @@ export default {
     text-align: center; 
   }
   .form-actions {
-    margin-top: 1rem;
+    margin-top: 2rem;
     display: flex;
     flex-direction: row-reverse;
-    gap: 1rem;
+    gap: 1.5rem;
   }
   .form-actions button {
     flex: 1;

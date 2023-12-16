@@ -1,13 +1,32 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import axios from 'axios'
+import router from '../router';
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    debug: true,
+    genders: [
+      { text: 'Male', value: 'male' },
+      { text: 'Female', value: 'female' },
+    ],
     loginFormData: {
       username: '',
       password: '',
+    },
+    registerFormData: {
+      username: '',
+      password: '',
+      cpassword: '',
+      lastname: '',
+      firstname: '',
+      middlename: '',
+      suffix: '',
+      gender: '',
+      birthdate: '',
     },
     navigations: [
       { title: 'Home', icon: 'mdi-home', route: '/home' },
@@ -17,13 +36,38 @@ export default new Vuex.Store({
     processingLogin: false,
     processingRegister: false,
     requestStatus: {
-      type: "",
-      msg: "",
+      type: '',
+      msg: '',
     },
   },
   getters: {
   },
   mutations: {
+    clearLoginFormData(state) {
+      state.loginFormData = {
+        username: '',
+        password: '',
+      };
+    },
+    clearRegisterFormData(state) {
+      state.registerFormData = {
+        username: '',
+        password: '',
+        cpassword: '',
+        lastname: '',
+        firstname: '',
+        middlename: '',
+        suffix: '',
+        gender: '',
+        birthdate: '',
+      };
+    },
+    clearRequestStatus(state) {
+      state.requestStatus = {
+        type: '',
+        msg: '',
+      };
+    },
     setLoginFormData(state, {field, value}) {
       state.loginFormData[field] = value;
     },
@@ -57,6 +101,9 @@ export default new Vuex.Store({
       state.requestStatus.type = '';
       try {
         const response = await axios.post('http://127.0.0.1:8000/api/register', state.registerFormData);
+        if (state.debug) {
+          console.log(response);
+        }
         if (response.status === 201) {
           state.processingRegister = false;
           state.requestStatus.type = 'success';

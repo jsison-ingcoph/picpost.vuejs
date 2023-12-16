@@ -11,6 +11,10 @@ export default {
   setup() {
     
   },
+  created() {
+    this.$store.commit('clearRequestStatus');
+    this.$store.commit('clearLoginFormData');
+  },
   components: {
     LoginForm,
   },
@@ -19,6 +23,6 @@ export default {
 
 <style scoped>
   .v-application {
-    padding: 0 1rem;
+    padding: 0 2rem;
   }
 </style>
