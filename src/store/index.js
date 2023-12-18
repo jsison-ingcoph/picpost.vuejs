@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import login from './login'
 import register from './register'
+import post from './post'
 
 Vue.use(Vuex)
 
@@ -43,5 +44,6 @@ export default new Vuex.Store({
   modules: {
     login,
     register,
+    post,
   }
 })

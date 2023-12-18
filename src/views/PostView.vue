@@ -4,12 +4,18 @@
     <div class="view-content">
       <v-card>
         <v-card-title>Make a PIC POST</v-card-title>
-        <v-form>
+        <v-form
+          v-model="$store.state.post.validFormPost"
+          @submit.prevent="$store.dispatch('post')"
+        >
           <v-row>
             <v-col>
               <v-textarea
                 label="Caption"
                 rows="3"
+                counter="1000"
+                :rules="$store.getters.formRulesPost.caption"
+                v-model="$store.state.post.formDataPost.caption"
               ></v-textarea>
             </v-col>
           </v-row>
@@ -20,6 +26,8 @@
                 prepend-icon="mdi-image"
                 placeholder="Pick an image"
                 accept="image/png, image/jpeg"
+                :rules="$store.getters.formRulesPost.filename"
+                @change="onFileChange"
               ></v-file-input>
             </v-col>
           </v-row>
@@ -44,9 +52,18 @@ export default {
   setup() {
     
   },
+  created() {
+    this.$store.commit('clearRequestStatus');
+    this.$store.commit('clearFormDataPost');
+  },
   components: {
     TopNavigation,
-  }
+  },
+  methods: {
+    onFileChange(file) {
+      this.$store.state.post.formDataPost.filename = file;
+    },
+  },
 }
 </script>
 

@@ -1,7 +1,6 @@
 <template>
   <v-app-bar
     fixed
-    color="primary"
     dark
   >
     <v-toolbar-title>{{ currentRouteName }}</v-toolbar-title>
@@ -9,7 +8,11 @@
     <v-btn icon>
       <v-icon>mdi-home</v-icon>
     </v-btn>
-    <v-btn icon>
+    <v-btn
+      icon
+      :color="$route.path === '/post' ? 'primary' : ''"
+      @click="navigate('/post')"
+    >
       <v-icon>mdi-publish</v-icon>
     </v-btn>
     <v-btn icon>
@@ -20,7 +23,8 @@
     </v-btn>
     <v-btn
       icon
-      @click="navigateToIndex"
+      color="red darken-1"
+      @click="navigate('/')"
     >
       <v-icon>mdi-logout</v-icon>
     </v-btn>
@@ -38,8 +42,9 @@ export default {
     }
   },
   methods: {
-    navigateToIndex() {
-      this.$router.push('/');
+    navigate(route) {
+      if (this.$route.path === route) return;
+      this.$router.push(route);
     },
   },
 }
