@@ -1,34 +1,59 @@
-import axios from 'axios';
+import axios from 'axios'
+import router from '../router'
 
 export default {
   state: {
-    loginFormData: {
+    formDataLogin: {
       username: '',
       password: '',
     },
     processingLogin: false,
+    validFormLogin: false,
   },
   getters: {
+    formRulesLogin: () => {
+      return {
+        username: [
+          v => !!v || 'This is required',
+          v => (v && v.length >= 4) || 'Must be at least 4 characters long',
+          v => /^[a-zA-Z0-9]+$/.test(v) || 'Can only contain letters and numbers',
+          v => (v.length <= 30) || 'Exceeds the character limit.',
+        ],
+        password: [
+          v => !!v || 'This is required',
+          v => (v && v.length >= 4) || 'Must be at least 4 characters long',
+          v => (v.length <= 30) || 'Exceeds the character limit.',
+        ],
+      };
+    }
   },
   mutations: {
-    clearLoginFormData(state) {
-      state.loginFormData = {
+    clearFormDataLogin(state) {
+      state.formDataLogin = {
         username: '',
         password: '',
       };
     },
-    setLoginFormData(state, {field, value}) {
-      state.loginFormData[field] = value;
+    setFormDataLogin(state, {field, value}) {
+      state.formDataLogin[field] = value;
     },
   },
   actions: {
     async loginUser({ state, rootState, commit }) {
       if (state.processingLogin) return;
       commit('clearRequestStatus');
+      if (!state.validFormLogin) {
+        if (rootState.debug) console.log('Form is not valid:', state.formDataLogin);
+        commit('setRequestStatus', {
+          type: 'warning',
+          msg: 'Please fill all required fields and check the validity.',
+        });
+        return;
+      }
       try {
         state.processingLogin = true;
-        if (rootState.debug) console.log('Sending:', state.loginFormData);
-        const response = await axios.post('http://127.0.0.1:8000/api/login', state.loginFormData);
+        if (rootState.debug) console.log('Sending:', state.formDataLogin);
+        const response = await axios.post('http://127.0.0.1:8000/api/login', state.formDataLogin);
         state.processingLogin = false;
         if (response.status === 200) {
           localStorage.setItem('token', response.data.token);

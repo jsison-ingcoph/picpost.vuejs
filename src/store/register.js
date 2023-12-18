@@ -1,8 +1,9 @@
-import axios from 'axios';
+import axios from 'axios'
+import router from '../router'
 
 export default {
   state: {
-    registerFormData: {
+    formDataRegister: {
       username: '',
       password: '',
       cpassword: '',
@@ -14,12 +15,54 @@ export default {
       birthdate: '',
     },
     processingRegister: false,
+    validFormRegister: false,
   },
   getters: {
+    formRulesRegister: (state) => {
+      return {
+        username: [
+          v => !!v || 'This is required',
+          v => (v && v.length >= 4) || 'Must be at least 4 characters long',
+          v => /^[a-zA-Z0-9]+$/.test(v) || 'Can only contain letters and numbers',
+          v => (v.length <= 30) || 'Exceeds the character limit.',
+        ],
+        password: [
+          v => !!v || 'This is required',
+          v => (v && v.length >= 4) || 'Must be at least 4 characters long',
+          v => (v.length <= 30) || 'Exceeds the character limit.',
+        ],
+        cpassword: [
+          v => !!v || 'This is required',
+          v => (v && v.length >= 4) || 'Must be at least 4 characters long',
+          v => (v === state.formDataRegister.password) || 'Passwords do not match',
+          v => (v.length <= 30) || 'Exceeds the character limit.',
+        ],
+        lastname: [
+          v => !!v || 'This is required',
+          v => (v.length <= 255) || 'Exceeds the character limit.',
+        ],
+        firstname: [
+          v => !!v || 'This is required',
+          v => (v.length <= 255) || 'Exceeds the character limit.',
+        ],
+        middlename: [
+          v => (v.length <= 255) || 'Exceeds the character limit.',
+        ],
+        suffix: [
+          v => (v.length <= 255) || 'Exceeds the character limit.',
+        ],
+        gender: [
+          v => !!v || 'This is required',
+        ],
+        birthdate: [
+          v => !!v || 'This is required',
+        ],
+      };
+    },
   },
   mutations: {
-    clearRegisterFormData(state) {
-      state.registerFormData = {
+    clearFormDataRegister(state) {
+      state.formDataRegister = {
         username: '',
         password: '',
         cpassword: '',
@@ -31,25 +74,26 @@ export default {
         birthdate: '',
       };
     },
-    setRegisterFormData(state, {field, value}) {
-      state.registerFormData[field] = value;
+    setFormDataRegister(state, {field, value}) {
+      state.formDataRegister[field] = value;
     },
   },
   actions: {
     async registerUser({ state, rootState, commit }) {
       if (state.processingRegister) return;
       commit('clearRequestStatus');
-      if (state.registerFormData.username.length < 4) {
+      if (!state.validFormRegister) {
+        if (rootState.debug) console.log('Form is not valid:', state.formDataRegister);
         commit('setRequestStatus', {
           type: 'warning',
-          msg: 'Username must be atleast 4 characters.',
+          msg: 'Please fill all required fields and check the validity.',
         });
         return;
       }
       try {
         state.processingRegister = true;
-        if (rootState.debug) console.log('Sending:', state.registerFormData);
-        const response = await axios.post('http://127.0.0.1:8000/api/register', state.registerFormData);
+        if (rootState.debug) console.log('Sending:', state.formDataRegister);
+        const response = await axios.post('http://127.0.0.1:8000/api/register', state.formDataRegister);
         state.processingRegister = false;
         if (response.status === 201) {
           localStorage.setItem('token', response.data.token);

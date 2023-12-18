@@ -2,13 +2,17 @@
   <v-card>
     <v-card-title>PIC POST</v-card-title>
     <v-card-subtitle>Post something good.</v-card-subtitle>
-    <v-form @submit.prevent="$store.dispatch('loginUser')">
+    <v-form
+      v-model="$store.state.login.validFormLogin"
+      @submit.prevent="$store.dispatch('loginUser')"
+    >
       <v-row>
         <v-col>
           <v-text-field
             label="Username"
-            @input="updateUsername"
-            v-model="$store.state.login.loginFormData.username"
+            counter="30"
+            :rules="$store.getters.formRulesLogin.username"
+            v-model="$store.state.login.formDataLogin.username"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -17,8 +21,9 @@
           <v-text-field
             type="password"
             label="Password"
-            @input="updatePassword"
-            v-model="$store.state.login.loginFormData.password"
+            counter="30"
+            :rules="$store.getters.formRulesLogin.username"
+            v-model="$store.state.login.formDataLogin.password"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -48,7 +53,7 @@ export default {
   },
   created() {
     this.$store.commit('clearRequestStatus');
-    this.$store.commit('clearLoginFormData');
+    this.$store.commit('clearFormDataLogin');
   },
   components: {
     Alert,
@@ -56,18 +61,6 @@ export default {
   methods: {
     navigateToRegister() {
       this.$router.push('/register');
-    },
-    updateUsername(value) {
-      this.$store.commit('setLoginFormData', {
-        field: 'username',
-        value: value,
-      });
-    },
-    updatePassword(value) {
-      this.$store.commit('setLoginFormData', {
-        field: 'password',
-        value: value,
-      });
     },
   }
 }

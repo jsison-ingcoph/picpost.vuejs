@@ -2,13 +2,17 @@
   <v-card>
     <v-card-title>PIC POST</v-card-title>
     <v-card-subtitle>Create an account.</v-card-subtitle>
-    <v-form @submit.prevent="$store.dispatch('registerUser')">
+    <v-form
+      v-model="$store.state.register.validFormRegister"
+      @submit.prevent="$store.dispatch('registerUser')"
+    >
       <v-row>
         <v-col>
           <v-text-field
             label="Create username"
-            @input="updateUsername"
-            v-model="$store.state.register.registerFormData.username"
+            counter="30"
+            :rules="$store.getters.formRulesRegister.username"
+            v-model="$store.state.register.formDataRegister.username"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -17,16 +21,18 @@
           <v-text-field
             type="password"
             label="Create password"
-            @input="updatePassword"
-            v-model="$store.state.register.registerFormData.password"
+            counter="30"
+            :rules="$store.getters.formRulesRegister.password"
+            v-model="$store.state.register.formDataRegister.password"
           ></v-text-field>
         </v-col>
         <v-col>
           <v-text-field
             type="password"
             label="Confirm password"
-            @input="updateCPassword"
-            v-model="$store.state.register.registerFormData.cpassword"
+            counter="30"
+            :rules="$store.getters.formRulesRegister.cpassword"
+            v-model="$store.state.register.formDataRegister.cpassword"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -34,15 +40,17 @@
         <v-col>
           <v-text-field
             label="Last name"
-            @input="updateLastname"
-            v-model="$store.state.register.registerFormData.lastname"
+            counter="255"
+            :rules="$store.getters.formRulesRegister.lastname"
+            v-model="$store.state.register.formDataRegister.lastname"
           ></v-text-field>
         </v-col>
         <v-col>
           <v-text-field
             label="First name"
-            @input="updateFirstname"
-            v-model="$store.state.register.registerFormData.firstname"
+            counter="255"
+            :rules="$store.getters.formRulesRegister.firstname"
+            v-model="$store.state.register.formDataRegister.firstname"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -50,15 +58,17 @@
         <v-col>
           <v-text-field
             label="Middle name (optional)"
-            @input="updateMiddlename"
-            v-model="$store.state.register.registerFormData.middlename"
+            counter="255"
+            :rules="$store.getters.formRulesRegister.middlename"
+            v-model="$store.state.register.formDataRegister.middlename"
           ></v-text-field>
         </v-col>
         <v-col>
           <v-text-field
             label="Suffix (optional)"
-            @input="updateSuffix"
-            v-model="$store.state.register.registerFormData.suffix"
+            counter="255"
+            :rules="$store.getters.formRulesRegister.suffix"
+            v-model="$store.state.register.formDataRegister.suffix"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -67,16 +77,16 @@
           <v-select
             :items="$store.state.genders"
             label="Gender"
-            @input="updateGender"
-            v-model="$store.state.register.registerFormData.gender"
+            :rules="$store.getters.formRulesRegister.gender"
+            v-model="$store.state.register.formDataRegister.gender"
           ></v-select>
         </v-col>
         <v-col>
           <v-text-field
             type="date"
             label="Birthdate"
-            @input="updateBirthdate"
-            v-model="$store.state.register.registerFormData.birthdate"
+            :rules="$store.getters.formRulesRegister.birthdate"
+            v-model="$store.state.register.formDataRegister.birthdate"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -106,7 +116,7 @@ export default {
   },
   created() {
     this.$store.commit('clearRequestStatus');
-    this.$store.commit('clearRegisterFormData');
+    this.$store.commit('clearFormDataRegister');
   },
   components: {
     Alert,
@@ -114,60 +124,6 @@ export default {
   methods: {
     navigateToIndex() {
       this.$router.push('/');
-    },
-    updateUsername(value) {
-      this.$store.commit('setRegisterFormData', {
-        field: 'username',
-        value: value,
-      });
-    },
-    updatePassword(value) {
-      this.$store.commit('setRegisterFormData', {
-        field: 'password',
-        value: value,
-      });
-    },
-    updateCPassword(value) {
-      this.$store.commit('setRegisterFormData', {
-        field: 'cpassword',
-        value: value,
-      });
-    },
-    updateLastname(value) {
-      this.$store.commit('setRegisterFormData', {
-        field: 'lastname',
-        value: value,
-      });
-    },
-    updateFirstname(value) {
-      this.$store.commit('setRegisterFormData', {
-        field: 'firstname',
-        value: value,
-      });
-    },
-    updateMiddlename(value) {
-      this.$store.commit('setRegisterFormData', {
-        field: 'middlename',
-        value: value,
-      });
-    },
-    updateSuffix(value) {
-      this.$store.commit('setRegisterFormData', {
-        field: 'suffix',
-        value: value,
-      });
-    },
-    updateGender(value) {
-      this.$store.commit('setRegisterFormData', {
-        field: 'gender',
-        value: value,
-      });
-    },
-    updateBirthdate(value) {
-      this.$store.commit('setRegisterFormData', {
-        field: 'birthdate',
-        value: value,
-      });
     },
   }
 }

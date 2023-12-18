@@ -13,7 +13,7 @@ export default {
   },
   created() {
     this.$store.commit('clearRequestStatus');
-    this.$store.commit('clearLoginFormData');
+    this.$store.commit('clearFormDataLogin');
   },
   components: {
     LoginForm,
